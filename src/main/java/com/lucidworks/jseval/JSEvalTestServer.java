@@ -49,6 +49,8 @@ public class JSEvalTestServer {
               }
               response.getWriter().println("</body></html>");
             } else if (target.contains("page")) {
+
+              // TODO add infite loop javascript
               if (new Random().nextBoolean()) {
                 response.getWriter().println("<!DOCTYPE html>\n" +
                     "<html>\n" +
@@ -112,12 +114,16 @@ public class JSEvalTestServer {
                     "</html>");
               }
             } else {
-              int typeOfDelay = new Random().nextInt(10);
-              int jsDelay = new Random().nextInt(3);
-              if (typeOfDelay >= 8) { // long wait
-                jsDelay = new Random().nextInt(28);
-              } if (typeOfDelay >= 6) { // medium
+              int typeOfDelay = new Random().nextInt(50);
+              int jsDelay;
+              if (typeOfDelay >= 45) { // should timeout
+                jsDelay = 500;
+              } else if (typeOfDelay >= 40) { // long wait
+                jsDelay = new Random().nextInt(30);
+              } else if (typeOfDelay >= 30) { // medium wait
                 jsDelay = new Random().nextInt(10);
+              } else {
+                jsDelay = new Random().nextInt(3); // fast
               }
               try {
                 Thread.sleep(jsDelay * 1000);
